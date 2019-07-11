@@ -1,0 +1,69 @@
+{
+  "name": "@alanchenchen/waveprogress",
+  "version": "0.1.2",
+  "author": "Alan Chen",
+  "description": "A canvas progress wave with light plugin system",
+  "main": "dist/WaveProgress.js",
+  "keywords": [
+    "wave",
+    "progress",
+    "canvas"
+  ],
+  "license": "996.ICU",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alanchenchen/waveProgress"
+  },
+  "homepage": "https://github.com/alanchenchen/waveProgress",
+  "bugs": {
+    "url": "https://github.com/alanchenchen/waveProgress/issues",
+    "email": "739709491@qq.com"
+  },
+  "scripts": {
+    "config": "node config/index.js",
+    "build": "webpack --progress",
+    "test": "mocha test/*.test.js"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-3": "^6.24.1",
+    "chalk": "^2.4.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.7",
+    "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.4",
+    "inquirer": "^6.1.0",
+    "js-yaml": "^3.13.1",
+    "mocha": "^5.2.0",
+    "uglifyjs-webpack-plugin": "^1.0.1",
+    "vue-loader": "^13.0.5",
+    "vue-template-compiler": "^2.4.4",
+    "webpack": "^3.8.1"
+  },
+  "engines": {
+    "node": ">= 8.16.0"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "stage-3"
+    ],
+    "plugins": [
+      [
+        "transform-runtime",
+        {
+          "polyfill": false,
+          "regenerator": true,
+          "moduleName": "babel-runtime"
+        }
+      ]
+    ]
+  }
+}

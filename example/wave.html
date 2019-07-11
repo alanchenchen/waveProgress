@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="wave"></canvas>
+    <script src="../dist/WaveProgress.js"></script>
+    <script>
+        const waveIns = new WaveProgress({
+            dom: '#wave',
+            progress: 47.7,
+            progressSpeed: 0.3,
+            waveCharactor: {
+                number: 2,
+                waveWidth: 0.01,
+                waveHeight: 30
+            }
+        })
+
+        waveIns.usePlugin(drawText)
+        waveIns.usePlugin(drawCircle, {
+            lineWidth: 4
+        })
+        waveIns.render()
+
+        setInterval(() => {
+            waveIns.setProgress({
+                to: Math.random()*100,
+                // from: 0
+            })
+            waveIns.update({
+                progressSpeed: 0.6
+            })
+        }, 3000)
+    </script>
+</body>
+</html>

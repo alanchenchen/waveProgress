@@ -1,0 +1,26 @@
+---
+# 配置package.json的参数和webpack.config的参数
+
+# npm包名，不允许大写，支持短杆写法
+libraryName: '@alanchenchen/waveprogress'
+# 打包后文件名，也是UMD script直接引入挂在windows对象的key名
+bundleName: WaveProgress 
+# 版本号
+version: 0.1.2
+# node版本
+nodeVersion: 8.16.0
+# 包描述
+description: A canvas progress wave with light plugin system
+# 关键词
+keywords:
+  - wave
+  - progress
+  - canvas
+# 作者
+author: Alan Chen
+# 用于bug反馈的邮箱
+email: 739709491@qq.com
+# 仓库地址和首页地址
+repository: 
+  type: git
+  url: https://github.com/alanchenchen/waveProgress
