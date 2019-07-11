@@ -69,6 +69,8 @@ A canvas progress wave with a light plugin system
 ### Plugin
 1. 插件使用，模仿vuejs的插件使用方式，并且同一插件多次调用，只会注册一次：
     ```js
+    import WaveProgress, { drawText, drawCircle } from '@alanchenchen/waveprogress'
+    
     const waveIns = new WaveProgress({
         dom: '#wave'
     })
