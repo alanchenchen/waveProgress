@@ -230,7 +230,7 @@ export default class WaveProgress {
      * 
      * @param {boolean} animated 是否开启动画，可选，默认为true
      */
-    render(animated) {
+    render(animated = true) {
         // beforeProgress、beforeProgress:render和duringProgress钩子执行
         this._triggerPlugin('beforeProgress')
         this._triggerPlugin('beforeProgress:render')

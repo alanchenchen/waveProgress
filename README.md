@@ -8,7 +8,7 @@
 A canvas progress wave with a light plugin system
 > Author：Alan Chen
 
-> Version: 0.1.2
+> Version: 0.1.3
 
 > Date: 2019/07/11
 
