@@ -14,13 +14,13 @@ export default class WaveProgress {
      *  @param {number} opts.progress 初始的进度，0~100，可选，默认为0
      *  @param {number} opts.waveSpeed 波浪横轴的运动速度，可选，默认为0.05，建议0.01~0.2
      *  @param {number} opts.progressSpeed 波浪纵轴的运动速度，可选，默认为0.6，取值大于0即可
-     *  @param {object} opts.waveCharactor 波浪外观配置对象，可选
-     *  @param {number} opts.waveCharactor.number 波浪的数量，默认是1，只能是1，2，3三者之一
-     *  @param {string} opts.waveCharactor.color 波浪的背景颜色，默认是'24, 133, 249'，只能是rgb颜色字符串
-     *  @param {number} opts.waveCharactor.waveWidth 波浪宽度,数越小越宽，默认是0.02
-     *  @param {number} opts.waveCharactor.waveHeight 波浪高度,数越大越高，默认是18
+     *  @param {object} opts.waveCharacter 波浪外观配置对象，可选
+     *  @param {number} opts.waveCharacter.number 波浪的数量，默认是1，只能是1，2，3三者之一
+     *  @param {string} opts.waveCharacter.color 波浪的背景颜色，默认是'24, 133, 249'，只能是rgb颜色字符串
+     *  @param {number} opts.waveCharacter.waveWidth 波浪宽度,数越小越宽，默认是0.02
+     *  @param {number} opts.waveCharacter.waveHeight 波浪高度,数越大越高，默认是18
      */
-    constructor({ dom, progress = INITIAL_RANGE, waveSpeed = WAVE_SPEED, progressSpeed = PROGRESS_SPEED, waveCharactor = {} } = {}) {
+    constructor({ dom, progress = INITIAL_RANGE, waveSpeed = WAVE_SPEED, progressSpeed = PROGRESS_SPEED, waveCharacter = {} } = {}) {
         if (arguments.length == 0) {
             throw new Error('expect object, the param must be an object')
         }
@@ -33,7 +33,7 @@ export default class WaveProgress {
             progress,
             waveSpeed,
             progressSpeed,
-            waveCharactor
+            waveCharacter
         })
     }
 
@@ -42,7 +42,7 @@ export default class WaveProgress {
      * 
      * @private
      */
-    _init({ dom, progress, waveSpeed, progressSpeed, waveCharactor }) {
+    _init({ dom, progress, waveSpeed, progressSpeed, waveCharacter }) {
         this.canvas = document.querySelector(dom)
         this.ctx = this.canvas.getContext('2d')
         let canvasWidth, canvasHeight
@@ -70,12 +70,12 @@ export default class WaveProgress {
             animationID: 0,
             waveSpeed,
             progressSpeed,
-            waveCharactor: {
+            waveCharacter: {
                 number: 1,
                 color: '24, 133, 249',
                 waveWidth: WAVE_WIDTH,
                 waveHeight: WAVE_HEIGHT,
-                ...waveCharactor
+                ...waveCharacter
             }
         }
 
@@ -102,7 +102,7 @@ export default class WaveProgress {
      */
     _triggerPlugin(hook) {
         this.plugins[hook].forEach(item => {
-            item.action.call(this, {
+            item.install.call(this, {
                 ctx: this.ctx,
                 // 回调函数返回深拷贝数据，避免插件通过configs修改已有数据
                 configs: JSON.parse(JSON.stringify(this.configs)),
@@ -177,10 +177,10 @@ export default class WaveProgress {
         const waveSpeed = this.configs.waveSpeed
         const progressSpeed = this.configs.progressSpeed
 
-        const waveWidth = this.configs.waveCharactor.waveWidth
-        const waveHeight = this.configs.waveCharactor.waveHeight
-        const waveNumber = this.configs.waveCharactor.number
-        const waveColor = this.configs.waveCharactor.color
+        const waveWidth = this.configs.waveCharacter.waveWidth
+        const waveHeight = this.configs.waveCharacter.waveHeight
+        const waveNumber = this.configs.waveCharacter.number
+        const waveColor = this.configs.waveCharacter.color
 
         ctx.clearRect(0, 0, mW, mH)
         switch (waveNumber) {
@@ -279,18 +279,18 @@ export default class WaveProgress {
      * @param {object} opts
      * @param {number} opts.waveSpeed 波浪横轴的运动速度，同构造器参数
      * @param {number} opts.progressSpeed 波浪纵轴的运动速度，同构造器参数
-     * @param {object} opts.waveCharactor 波浪外观配置对象，，同构造器参数
+     * @param {object} opts.waveCharacter 波浪外观配置对象，，同构造器参数
      * @returns {WaveProgress} 返回实例本身 
      */
-    update({ waveSpeed, progressSpeed, waveCharactor } = {}) {
+    update({ waveSpeed, progressSpeed, waveCharacter } = {}) {
         if (typeof waveSpeed == 'number') {
             this.configs.waveSpeed = waveSpeed
         }
         if (typeof progressSpeed == 'number') {
             this.configs.progressSpeed = progressSpeed
         }
-        if (Object.prototype.toString.call(waveCharactor) == '[object Object]') {
-            this.configs.waveCharactor = { ...this.configs.waveCharactor, ...waveCharactor }
+        if (Object.prototype.toString.call(waveCharacter) == '[object Object]') {
+            this.configs.waveCharacter = { ...this.configs.waveCharacter, ...waveCharacter }
         }
         // update和duringProgres钩子执行
         this._triggerPlugin('update')
@@ -311,12 +311,17 @@ export default class WaveProgress {
     usePlugin(plugin, opts) {
         const hooks = Object.keys(this.plugins)
         if (hooks.includes(plugin.hook)) {
-            const pluginFnStrList = this.plugins[plugin.hook].map(item => item.toString())
+            // 通过hooks数组内的函数string来对比新注册的插件install函数string，判断插件的逻辑是否重复
+            const pluginFnStrList = this.plugins[plugin.hook].map(item => {
+                if(item !== undefined && item.install instanceof Function) {
+                    return item.install.toString()
+                }
+            })
             // 拦截同一个插件重估调用
             if (!pluginFnStrList.includes(plugin.install.toString())) {
                 this.plugins[plugin.hook].push({
                     id: Symbol(),
-                    action: plugin.install,
+                    install: plugin.install,
                     params: opts,
                     scopedData: null
                 })

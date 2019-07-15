@@ -18,7 +18,7 @@ export default {
         if (configs.yOffset >= 50) {
             ctx.fillStyle = '#fff'
         } else {
-            ctx.fillStyle = opts.color || `rgba(${configs.waveCharactor.color}, 0.9)`
+            ctx.fillStyle = opts.color || `rgba(${configs.waveCharacter.color}, 0.9)`
         }
 
         ctx.fillText(configs.yOffset.toFixed(1) + '%', centerPadding, centerPadding + size / 2)

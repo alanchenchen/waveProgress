@@ -10,7 +10,7 @@ export default {
     install({ ctx, configs }, opts={}) {
         ctx.beginPath()
         ctx.lineWidth = (opts && opts.lineWidth) || 2
-        ctx.strokeStyle = (opts && opts.lineColor) || `rgba(${configs.waveCharactor.color}, 1)`
+        ctx.strokeStyle = (opts && opts.lineColor) || `rgba(${configs.waveCharacter.color}, 1)`
         const r = Math.min(configs.canvasWidth, configs.canvasHeight) / 2
         ctx.arc(r, r, r + 1, 0, 2 * Math.PI)
         ctx.stroke()

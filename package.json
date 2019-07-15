@@ -1,6 +1,6 @@
 {
   "name": "@alanchenchen/waveprogress",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "author": "Alan Chen",
   "description": "A canvas progress wave with light plugin system",
   "main": "dist/WaveProgress.js",

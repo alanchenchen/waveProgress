@@ -8,9 +8,9 @@
 A canvas progress wave with a light plugin system
 > Author：Alan Chen
 
-> Version: 0.1.3
+> Version: 0.1.4
 
-> Date: 2019/07/11
+> Date: 2019/07/15
 
 > 用canvas绘制波浪进度指示器的插件
 
@@ -33,7 +33,7 @@ A canvas progress wave with a light plugin system
     * progress `[Number]`，可选，初始的进度，0~100，默认是0
     * waveSpeed `[Number]`，可选，波浪横轴的运动速度，默认为0.05，建议0.01~0.2
     * progressSpeed `[Number]`，可选，波浪纵轴的运动速度，默认为0.6，取值大于0即可
-    * waveCharactor `[Object]`，可选，波浪外观配置对象，key值如下：
+    * waveCharacter `[Object]`，可选，波浪外观配置对象，key值如下：
         * number `[Number]`，可选，波浪的数量，默认是1，只能是1，2，3三者之一
         * color `[String]`，可选，波浪的背景颜色，默认是'24, 133, 249'，只能是rgb颜色字符串
         * waveWidth `[Number]`，可选，波浪宽度,数越小越宽，默认是0.02
@@ -48,7 +48,7 @@ A canvas progress wave with a light plugin system
 3. update `[function(Object)]`，更新实例的配置项，返回实例本身。一个参数，参数是一个对象，如下：
     * waveSpeed `[Number]`，可选，波浪横轴的运动速度，同构造器参数
     * progressSpeed `[Number]`，可选，波浪纵轴的运动速度，同构造器参数
-    * waveCharactor `[Object]`，可选，波浪外观配置对象，，同构造器参数
+    * waveCharacter `[Object]`，可选，波浪外观配置对象，，同构造器参数
 4. usePlugin `[function(Object)]`，注册插件，插件会和生命周期钩子结合在一起，返回实例本身。两个参数，参数一是一个对象，参数二是个任意类型，会传给参数一的install函数里，插件结构(参数一)如下：
     * hook `[String]`，生命周期名称，必须是以下一种：
         1. beforeProgress -- 波浪进度开始之前，会在render和setProgress函数调用后立即触发，每调用一次触发一次
@@ -83,6 +83,7 @@ A canvas progress wave with a light plugin system
     waveIns.usePlugin(drawText, {
         fontSize: 16
     })
+    waveIns.render()
     ```
 2. 当前npm包会内置两个插件，分别是`drawText`(实时显示进度百分比文本)和`drawCircle`(绘制波浪进度指示器的外层圆环)
     * drawText -- 支持传入一个对象，对象结构如下：
@@ -127,8 +128,9 @@ A canvas progress wave with a light plugin system
 2. 实例调用update方法后，会直接生效，不会干扰progress过程。
 3. 实例的configs对象无法添加和删除属性，只允许修改，否则会报错，已经做了seal处理，但是不建议直接修改configs，建议通过update方法，因为会触发钩子函数。
 4. 开发插件时，回调函数的this指向实例本身，并且参数一的configs只读。
-5. 实例如果不使用任何插件，只具有波浪效果。
-6. 给波浪添加外层形状其实非常简单，可以直接改变canvas标签的css，也可以使用类似drawCircle的插件。
+5. 使用插件时，建议在render之前usePlugin，并且插件会受实例的钩子效果影响，如果插件处于progressing钩子，但是实例禁止了动画效果，那么插件触发的次数只有一次，因为progressing过程是瞬间的。
+6. 实例如果不使用任何插件，只具有波浪效果。
+7. 给波浪添加外层形状其实非常简单，可以直接改变canvas标签的css，也可以使用类似drawCircle的插件。
 
 ## license
 * Anti 996(996.ICU)

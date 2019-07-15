@@ -6,7 +6,7 @@ libraryName: '@alanchenchen/waveprogress'
 # 打包后文件名，也是UMD script直接引入挂在windows对象的key名
 bundleName: WaveProgress 
 # 版本号
-version: 0.1.3
+version: 0.1.4
 # node版本
 nodeVersion: 8.16.0
 # 包描述
